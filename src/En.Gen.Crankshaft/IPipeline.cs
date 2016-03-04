@@ -1,9 +1,13 @@
+using System;
 using System.Threading.Tasks;
 
 namespace En.Gen.Crankshaft
 {
-    public interface IPipeline
+    public interface IPipeline<in TPayload>
     {
-        Task<bool> Process(object payload);
+        Task<bool> Process(TPayload payload);
+    }
+    public interface IPipeline : IPipeline<object>
+    {
     }
 }

@@ -36,4 +36,17 @@ namespace En.Gen.Crankshaft
             return success;
         }
     }
+
+    public class Pipeline<TPayload> : Pipeline, IPipeline<TPayload>
+    {
+        public Pipeline(IList<Func<IMiddleware>> middleware) :
+            base(middleware)
+        {
+        }
+
+        public async Task<bool> Process(TPayload payload)
+        {
+            return await base.Process(payload);
+        }
+    }
 }

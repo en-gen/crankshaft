@@ -51,4 +51,31 @@ namespace En.Gen.Crankshaft
             return new Pipeline(Middleware.ToList());
         }
     }
+
+    public class PipelineBuilder<TPayload> : PipelineBuilder, IBuildPipeline<TPayload>
+    {
+        public PipelineBuilder(IResolveMiddlewareFactory factoryResolver) :
+            base(factoryResolver)
+        {
+        }
+
+        public new IBuildPipeline<TPayload> Use<TMiddleware>()
+            where TMiddleware : IMiddleware
+        {
+            base.Use<TMiddleware>();
+            return this;
+        }
+
+        public new IBuildPipeline<TPayload> Fork<TForkedMiddleware>(Action<IBuildPipeline> buildLeft, Action<IBuildPipeline> buildRight)
+            where TForkedMiddleware : ForkedMiddleware
+        {
+            base.Fork<TForkedMiddleware>(buildLeft, buildRight);
+            return this;
+        }
+
+        public new IPipeline<TPayload> Build()
+        {
+            return new Pipeline<TPayload>(Middleware.ToList());
+        }
+    }
 }
