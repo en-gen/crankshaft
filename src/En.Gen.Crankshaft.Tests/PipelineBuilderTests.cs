@@ -2,15 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using En.Gen.Crankshaft.Fork;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace En.Gen.Crankshaft.Tests
 {
-    [TestClass]
     public class PipelineBuilderTests
     {
-        [TestMethod]
+        [Fact]
         public void Build__Given_RegisteredMiddleware__Then_CreatePipeline()
         {
             var payload = new object();
@@ -46,7 +45,7 @@ namespace En.Gen.Crankshaft.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Fork__Given_RegisteredForkedMiddleware__Then_ConfigureForksAndAddForkMiddleware()
         {
             var payload = new object();
@@ -72,17 +71,17 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new PipelineBuilder(mockFactoryResolver.Object);
             var forkResult = subject.Fork<ForkedMiddleware>(mockConfigureLeft, mockConfigureRight);
 
-            Assert.AreSame(subject, forkResult);
+            Assert.Same(subject, forkResult);
 
-            Assert.IsTrue(leftBuilderConfigured);
-            Assert.IsTrue(rightBuilderConfigured);
+            Assert.True(leftBuilderConfigured);
+            Assert.True(rightBuilderConfigured);
 
             var processResult = await subject
                 .Build()
                 .Process(payload);
 
-            Assert.IsTrue(processResult);
-            Assert.IsNotNull(mockForkedMiddleware);
+            Assert.True(processResult);
+            Assert.NotNull(mockForkedMiddleware);
             mockForkedMiddleware.Verify(x => x.Process(payload), Times.Once);
         }
     }
