@@ -3,15 +3,14 @@ using System.Threading.Tasks;
 using Autofac;
 using En.Gen.Crankshaft.Autofac;
 using En.Gen.Crankshaft.Fork;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace En.Gen.Crankshaft.Tests.Autofac
 {
-    [TestClass]
     public class AutofacMiddlewareFactoryResolverTests
     {
-        [TestMethod]
+        [Fact]
         public void ResolveFactory__Given_RegisteredMiddleware__Then_ReturnMiddlewareFunc()
         {
             var expectedMiddleware = Mock.Of<IMiddleware>();
@@ -22,10 +21,10 @@ namespace En.Gen.Crankshaft.Tests.Autofac
             var result = subject.ResolveFactory<IMiddleware>();
             var middleware = result();
 
-            Assert.AreSame(expectedMiddleware, middleware);
+            Assert.Same(expectedMiddleware, middleware);
         }
 
-        [TestMethod]
+        [Fact]
         public void ResolveForkFactory__Given_RegisteredMiddleware__Then_ReturnForkMiddlewareFunc()
         {
             var containerBuilder = new ContainerBuilder();
@@ -38,10 +37,10 @@ namespace En.Gen.Crankshaft.Tests.Autofac
             var expectedRightPipeline = Mock.Of<IPipeline>();
             var middleware = result(expectedLeftPipeline, expectedRightPipeline);
 
-            Assert.IsNotNull(middleware);
-            Assert.IsInstanceOfType(middleware, typeof(TestableForkedMiddleware));
-            Assert.AreSame(expectedLeftPipeline, middleware.TestLeftPipeline);
-            Assert.AreSame(expectedRightPipeline, middleware.TestRightPipeline);
+            Assert.NotNull(middleware);
+            Assert.IsType<TestableForkedMiddleware>(middleware);
+            Assert.Same(expectedLeftPipeline, middleware.TestLeftPipeline);
+            Assert.Same(expectedRightPipeline, middleware.TestRightPipeline);
         }
 
         internal class TestableForkedMiddleware : ForkedMiddleware
