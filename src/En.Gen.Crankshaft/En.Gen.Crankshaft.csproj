@@ -36,6 +36,9 @@
   <ItemGroup>
     <Compile Include="Autofac\AutofacMiddlewareFactoryResolver.cs" />
     <Compile Include="Fork\ForkedMiddleware.cs" />
+    <Compile Include="Fork\ForkedPipeline.cs" />
+    <Compile Include="Fork\ForkedPipelineBuilder.cs" />
+    <Compile Include="Fork\IForkedPipeline.cs" />
     <Compile Include="IBuildPipeline.cs" />
     <Compile Include="IMiddleware.cs" />
     <Compile Include="IPipeline.cs" />

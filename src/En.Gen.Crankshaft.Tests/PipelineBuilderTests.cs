@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using En.Gen.Crankshaft.Fork;
@@ -12,6 +13,7 @@ namespace En.Gen.Crankshaft.Tests
         [Fact]
         public void Build__Given_RegisteredMiddleware__Then_CreatePipeline()
         {
+            var environment = new Dictionary<string, object>();
             var payload = new object();
 
             var mockMiddleware = Enumerable.Range(0, 3)
@@ -19,7 +21,7 @@ namespace En.Gen.Crankshaft.Tests
                 {
                     var mock = new Mock<IMiddleware>();
                     mock
-                        .Setup(x => x.Process(payload))
+                        .Setup(x => x.BeforeNext(environment, payload))
                         .Returns(Task.FromResult(true));
                     return mock;
                 })
@@ -36,12 +38,12 @@ namespace En.Gen.Crankshaft.Tests
                 .Use<IMiddleware>()
                 .Use<IMiddleware>()
                 .Use<IMiddleware>();
-            var pipeline = subject.Build();
+            var pipeline = subject.Build<object>();
             pipeline.Process(payload);
 
             foreach (var mock in mockMiddleware)
             {
-                mock.Verify(x => x.Process(payload), Times.Once);
+                mock.Verify(x => x.BeforeNext(environment, payload), Times.Once);
             }
         }
 
@@ -55,6 +57,7 @@ namespace En.Gen.Crankshaft.Tests
         [Fact]
         public void BuildGeneric__Given_RegisteredMiddleware__Then_CreatePipeline()
         {
+            var environment = new Dictionary<string, object>();
             var payload = "TEST";
 
             var mockMiddleware = Enumerable.Range(0, 3)
@@ -62,7 +65,7 @@ namespace En.Gen.Crankshaft.Tests
                 {
                     var mock = new Mock<IMiddleware>();
                     mock
-                        .Setup(x => x.Process(payload))
+                        .Setup(x => x.BeforeNext(environment, payload))
                         .Returns(Task.FromResult(true));
                     return mock;
                 })
@@ -74,23 +77,24 @@ namespace En.Gen.Crankshaft.Tests
                 .Setup(x => x.ResolveFactory<IMiddleware>())
                 .Returns(() => mockMiddleware[index++].Object);
 
-            var subject = new PipelineBuilder<string>(mockFactoryResolver.Object);
+            var subject = new PipelineBuilder(mockFactoryResolver.Object);
             subject
                 .Use<IMiddleware>()
                 .Use<IMiddleware>()
                 .Use<IMiddleware>();
-            var pipeline = subject.Build();
+            var pipeline = subject.Build<object>();
             pipeline.Process(payload);
 
             foreach (var mock in mockMiddleware)
             {
-                mock.Verify(x => x.Process(payload), Times.Once);
+                mock.Verify(x => x.BeforeNext(environment, payload), Times.Once);
             }
         }
 
         [Fact]
         public async Task Fork__Given_RegisteredForkedMiddleware__Then_ConfigureForksAndAddForkMiddleware()
         {
+            var environment = new Dictionary<string, object>();
             var payload = new object();
 
             Mock<ForkedMiddleware> mockForkedMiddleware = null;
@@ -101,7 +105,7 @@ namespace En.Gen.Crankshaft.Tests
                 {
                     mockForkedMiddleware = new Mock<ForkedMiddleware>(Tuple.Create(left, right));
                     mockForkedMiddleware
-                        .Setup(x => x.Process(payload))
+                        .Setup(x => x.BeforeNext(environment, payload))
                         .Returns(Task.FromResult(true));
                     return mockForkedMiddleware.Object;
                 });
@@ -120,17 +124,18 @@ namespace En.Gen.Crankshaft.Tests
             Assert.True(rightBuilderConfigured);
 
             var processResult = await subject
-                .Build()
+                .Build<object>()
                 .Process(payload);
 
             Assert.True(processResult);
             Assert.NotNull(mockForkedMiddleware);
-            mockForkedMiddleware.Verify(x => x.Process(payload), Times.Once);
+            mockForkedMiddleware.Verify(x => x.BeforeNext(environment, payload), Times.Once);
         }
 
         [Fact]
         public async Task ForkGeneric__Given_RegisteredForkedMiddleware__Then_ConfigureForksAndAddForkMiddleware()
         {
+            var environment = new Dictionary<string, object>();
             var payload = "TEST";
 
             Mock<ForkedMiddleware> mockForkedMiddleware = null;
@@ -141,7 +146,7 @@ namespace En.Gen.Crankshaft.Tests
                 {
                     mockForkedMiddleware = new Mock<ForkedMiddleware>(Tuple.Create(left, right));
                     mockForkedMiddleware
-                        .Setup(x => x.Process(payload))
+                        .Setup(x => x.BeforeNext(environment, payload))
                         .Returns(Task.FromResult(true));
                     return mockForkedMiddleware.Object;
                 });
@@ -151,7 +156,7 @@ namespace En.Gen.Crankshaft.Tests
             var mockConfigureLeft = new Action<IBuildPipeline>(builder => leftBuilderConfigured = true);
             var mockConfigureRight = new Action<IBuildPipeline>(builder => rightBuilderConfigured = true);
 
-            var subject = new PipelineBuilder<string>(mockFactoryResolver.Object);
+            var subject = new PipelineBuilder(mockFactoryResolver.Object);
             var forkResult = subject.Fork<ForkedMiddleware>(mockConfigureLeft, mockConfigureRight);
 
             Assert.Same(subject, forkResult);
@@ -160,12 +165,12 @@ namespace En.Gen.Crankshaft.Tests
             Assert.True(rightBuilderConfigured);
 
             var processResult = await subject
-                .Build()
+                .Build<object>()
                 .Process(payload);
 
             Assert.True(processResult);
             Assert.NotNull(mockForkedMiddleware);
-            mockForkedMiddleware.Verify(x => x.Process(payload), Times.Once);
+            mockForkedMiddleware.Verify(x => x.BeforeNext(environment, payload), Times.Once);
         }
     }
 }
