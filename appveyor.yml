@@ -1,6 +1,9 @@
 version: 0.1.0.{build}
+branches:
+  only:
+  - master
 os: Visual Studio 2015
-configuration: Debug
+configuration: Release
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -23,8 +26,6 @@ test_script:
 notifications:
 - provider: Slack
   incoming_webhook: https://hooks.slack.com/services/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
-  auth_token:
-    secure: YQuy7rWA8Asj6RcjyKgF5g==
-  on_build_success: false
-  on_build_failure: false
-  on_build_status_changed: true
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
