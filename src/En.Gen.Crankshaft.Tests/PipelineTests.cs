@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace En.Gen.Crankshaft.Tests
 {
-    [TestClass]
     public class PipelineTests
     {
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_NoMiddleware__Then_DoNotProcess()
         {
             var payload = new object();
@@ -20,9 +19,9 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
-        [TestMethod]
+        [Fact]
         public async Task ProcessGeneric__Given_NoMiddleware__Then_DoNotProcess()
         {
             var payload = new object();
@@ -32,10 +31,10 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline<string>(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_SingleMiddleware__Then_ProcessPayload()
         {
             var payload = new object();
@@ -50,12 +49,12 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
             mockMiddleware.Verify(x => x.Process(payload), Times.Once);
         }
 
 
-        [TestMethod]
+        [Fact]
         public async Task ProcessGeneric__Given_SingleMiddleware__Then_ProcessPayload()
         {
             var payload = new object();
@@ -70,11 +69,11 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline<string>(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
             mockMiddleware.Verify(x => x.Process(payload), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_SingleMiddleware__When_ProcessSuccess__Then_PostProcessPayload()
         {
             var payload = new object();
@@ -89,11 +88,11 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
             mockMiddleware.Verify(x => x.PostProcess(payload), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ProcessGeneric__Given_SingleMiddleware__When_ProcessSuccess__Then_PostProcessPayload()
         {
             var payload = new object();
@@ -108,11 +107,11 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline<string>(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
             mockMiddleware.Verify(x => x.PostProcess(payload), Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_SingleMiddleware__When_ProcessFail__Then_DoNotPostProcess()
         {
             var payload = new object();
@@ -127,11 +126,11 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
             mockMiddleware.Verify(x => x.PostProcess(payload), Times.Never);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ProcessGeneric__Given_SingleMiddleware__When_ProcessFail__Then_DoNotPostProcess()
         {
             var payload = new object();
@@ -146,11 +145,11 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline<string>(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
             mockMiddleware.Verify(x => x.PostProcess(payload), Times.Never);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_MultipleMiddleware__When__AllSuccess__Then_AllMiddlewareProcessPayload_And_AllMiddlewarePostProcessPayload()
         {
             var payload = new object();
@@ -176,8 +175,8 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline(middlewares);
             var result = await subject.Process(payload);
             
-            Assert.IsTrue(result);
-            CollectionAssert.AreEqual(new [] {0, 1, 2}, callOrder);
+            Assert.True(result);
+            Assert.Equal(new [] {0, 1, 2}, callOrder);
 
             foreach (var mockMiddleware in mockMiddlewares)
             {
@@ -187,7 +186,7 @@ namespace En.Gen.Crankshaft.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ProcessGeneric__Given_MultipleMiddleware__When__AllSuccess__Then_AllMiddlewareProcessPayload_And_AllMiddlewarePostProcessPayload()
         {
             var payload = new object();
@@ -213,8 +212,8 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline<string>(middlewares);
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
-            CollectionAssert.AreEqual(new[] { 0, 1, 2 }, callOrder);
+            Assert.True(result);
+            Assert.Equal(new[] { 0, 1, 2 }, callOrder);
 
             foreach (var mockMiddleware in mockMiddlewares)
             {
@@ -224,7 +223,7 @@ namespace En.Gen.Crankshaft.Tests
             }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_MultipleMiddleware__When__SecondProcessFails__Then_ShortCircuit()
         {
             var payload = new object();
@@ -247,7 +246,7 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
 
             mockFirstMiddleware.Verify(x => x.Process(payload), Times.Once);
             mockFirstMiddleware.Verify(x => x.PostProcess(payload), Times.Once);
@@ -259,7 +258,7 @@ namespace En.Gen.Crankshaft.Tests
             mockThirdMiddleware.Verify(x => x.PostProcess(payload), Times.Never);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ProcessGeneric__Given_MultipleMiddleware__When__SecondProcessFails__Then_ShortCircuit()
         {
             var payload = new object();
@@ -282,7 +281,7 @@ namespace En.Gen.Crankshaft.Tests
             var subject = new Pipeline<string>(middleware);
             var result = await subject.Process(payload);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
 
             mockFirstMiddleware.Verify(x => x.Process(payload), Times.Once);
             mockFirstMiddleware.Verify(x => x.PostProcess(payload), Times.Once);

@@ -1,36 +1,32 @@
 ﻿using System;
 using System.Threading.Tasks;
 using En.Gen.Crankshaft.Fork;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Xunit;
 
 namespace En.Gen.Crankshaft.Tests.Fork
 {
-    [TestClass]
     public class ForkedMiddlewareTests
     {
-        [TestMethod]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
         public void ctor__When_TupleNull__Then_ThrowArgNullEx()
         {
-            new TestableForkedMiddleware(null);
+            Assert.Throws<ArgumentNullException>(() => new TestableForkedMiddleware(null));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Fact]
         public void ctor__When_LeftPipelineNull__Then_ThrowArgNullEx()
         {
-            new TestableForkedMiddleware(Tuple.Create((IPipeline)null, Mock.Of<IPipeline>()));
+            Assert.Throws<ArgumentNullException>(() => new TestableForkedMiddleware(Tuple.Create((IPipeline)null, Mock.Of<IPipeline>())));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
         public void ctor__When_RightPipelineNull__Then_ThrowArgNullEx()
         {
-            new TestableForkedMiddleware(Tuple.Create(Mock.Of<IPipeline>(), (IPipeline)null));
+            Assert.Throws<ArgumentNullException>(() => new TestableForkedMiddleware(Tuple.Create(Mock.Of<IPipeline>(), (IPipeline)null)));
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_LeftAndRightPipeline__When_ChooseLeft__Then_ProcessLeftAndReturnResult()
         {
             var payload = "LEFT";
@@ -46,12 +42,12 @@ namespace En.Gen.Crankshaft.Tests.Fork
 
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
             mockLeftPipeline.Verify(x => x.Process(payload), Times.Once);
             mockRightPipeline.Verify(x => x.Process(It.IsAny<object>()), Times.Never());
         }
 
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_LeftAndRightPipeline__When_ChooseRight__Then_ProcessRightAndReturnResult()
         {
             var payload = "RIGHT";
@@ -67,12 +63,12 @@ namespace En.Gen.Crankshaft.Tests.Fork
 
             var result = await subject.Process(payload);
 
-            Assert.IsFalse(result);
+            Assert.False(result);
             mockLeftPipeline.Verify(x => x.Process(It.IsAny<object>()), Times.Never);
             mockRightPipeline.Verify(x => x.Process(payload), Times.Once);
         }
         
-        [TestMethod]
+        [Fact]
         public async Task Process__Given_LeftAndRightPipeline__When_ChooseNeither__Then_DoNothingAndReturnTrue()
         {
             var payload = "NOPE";
@@ -84,7 +80,7 @@ namespace En.Gen.Crankshaft.Tests.Fork
 
             var result = await subject.Process(payload);
 
-            Assert.IsTrue(result);
+            Assert.True(result);
             mockLeftPipeline.Verify(x => x.Process(It.IsAny<object>()), Times.Never);
             mockRightPipeline.Verify(x => x.Process(It.IsAny<object>()), Times.Never);
         }
