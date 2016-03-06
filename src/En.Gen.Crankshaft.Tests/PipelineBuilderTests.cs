@@ -46,6 +46,13 @@ namespace En.Gen.Crankshaft.Tests
         }
 
         [Fact]
+        public void Build__When_MiddlewareUnregistered__Then_ThrowException()
+        {
+            var subject = new PipelineBuilder(Mock.Of<IResolveMiddlewareFactory>());
+            Assert.Throws<Exception>(() => subject.Use<IMiddleware>());
+        }
+
+        [Fact]
         public void BuildGeneric__Given_RegisteredMiddleware__Then_CreatePipeline()
         {
             var payload = "TEST";

@@ -21,6 +21,7 @@ namespace En.Gen.Crankshaft.Tests
 
             Assert.True(result);
         }
+
         [Fact]
         public async Task ProcessGeneric__Given_NoMiddleware__Then_DoNotProcess()
         {
@@ -48,11 +49,10 @@ namespace En.Gen.Crankshaft.Tests
 
             var subject = new Pipeline(middleware);
             var result = await subject.Process(payload);
-
+            
             Assert.True(result);
             mockMiddleware.Verify(x => x.Process(payload), Times.Once);
         }
-
 
         [Fact]
         public async Task ProcessGeneric__Given_SingleMiddleware__Then_ProcessPayload()
