@@ -8,7 +8,7 @@ namespace En.Gen.Crankshaft
         Func<TMiddleware> ResolveFactory<TMiddleware>()
             where TMiddleware : IMiddleware;
 
-        Func<IPipeline, IPipeline, TMiddleware> ResolveForkFactory<TMiddleware>()
+        Func<IPipeline<object>, IPipeline<object>, TMiddleware> ResolveForkFactory<TMiddleware>()
             where TMiddleware : ForkedMiddleware;
     }
 }

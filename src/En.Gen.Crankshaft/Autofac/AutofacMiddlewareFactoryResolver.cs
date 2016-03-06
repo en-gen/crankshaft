@@ -19,11 +19,11 @@ namespace En.Gen.Crankshaft.Autofac
             return Container.Resolve<Func<TMiddleware>>();
         }
 
-        public Func<IPipeline, IPipeline, TMiddleware> ResolveForkFactory<TMiddleware>()
+        public Func<IPipeline<object>, IPipeline<object>, TMiddleware> ResolveForkFactory<TMiddleware>()
             where TMiddleware : ForkedMiddleware
         {
             return (leftPipeline, rightPipeline) => Container.Resolve<TMiddleware>(
-                new TypedParameter(typeof(Tuple<IPipeline, IPipeline>), Tuple.Create(leftPipeline, rightPipeline)));
+                new TypedParameter(typeof(Tuple<IPipeline<object>, IPipeline<object>>), Tuple.Create(leftPipeline, rightPipeline)));
         }
     }
 }

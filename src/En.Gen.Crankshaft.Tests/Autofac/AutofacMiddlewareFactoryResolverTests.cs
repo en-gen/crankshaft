@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
 using En.Gen.Crankshaft.Autofac;
@@ -33,8 +34,8 @@ namespace En.Gen.Crankshaft.Tests.Autofac
             var subject = new AutofacMiddlewareFactoryResolver(containerBuilder.Build());
             var result = subject.ResolveForkFactory<TestableForkedMiddleware>();
 
-            var expectedLeftPipeline = Mock.Of<IPipeline>();
-            var expectedRightPipeline = Mock.Of<IPipeline>();
+            var expectedLeftPipeline = Mock.Of<IPipeline<object>>();
+            var expectedRightPipeline = Mock.Of<IPipeline<object>>();
             var middleware = result(expectedLeftPipeline, expectedRightPipeline);
 
             Assert.NotNull(middleware);
@@ -45,20 +46,20 @@ namespace En.Gen.Crankshaft.Tests.Autofac
 
         internal class TestableForkedMiddleware : ForkedMiddleware
         {
-            public IPipeline TestLeftPipeline => LeftPipeline;
-            public IPipeline TestRightPipeline => RightPipeline;
+            public IPipeline<object> TestLeftPipeline => LeftPipeline;
+            public IPipeline<object> TestRightPipeline => RightPipeline;
             
-            public TestableForkedMiddleware(Tuple<IPipeline, IPipeline> pipelines) :
+            public TestableForkedMiddleware(Tuple<IPipeline<object>, IPipeline<object>> pipelines) :
                 base(pipelines)
             {
             }
 
-            protected override IPipeline ChoosePipeline(object payload)
+            protected override IPipeline<object> ChoosePipeline(object payload)
             {
                 throw new NotImplementedException();
             }
 
-            public override Task PostProcess(object payload)
+            public override Task AfterNext(IDictionary<string, object> environment, object payload)
             {
                 throw new NotImplementedException();
             }
