@@ -30,43 +30,45 @@ namespace En.Gen.Crankshaft.Tests.Fork
         [Fact]
         public async Task Process__Given_LeftAndRightPipeline__When_ChooseLeft__Then_ProcessLeftAndReturnResult()
         {
+            var environment = new Dictionary<string, object>();
             var payload = "LEFT";
 
-            var mockLeftPipeline = new Mock<IPipeline<object>>();
+            var mockLeftPipeline = new Mock<IForkedPipeline>();
             mockLeftPipeline
-                .Setup(x => x.Process(payload))
-                .Returns(Task.FromResult(true));
+                .Setup(x => x.Process(environment, payload))
+                .ReturnsAsync(true);
 
-            var mockRightPipeline = new Mock<IPipeline<object>>();
+            var mockRightPipeline = new Mock<IForkedPipeline>();
 
-            var subject = new TestableForkedMiddleware(Tuple.Create(mockLeftPipeline.Object, mockRightPipeline.Object));
+            var subject = new TestableForkedMiddleware(Tuple.Create<IPipeline<object>, IPipeline<object>>(mockLeftPipeline.Object, mockRightPipeline.Object));
 
-            var result = await subject.BeforeNext(new Dictionary<string, object>(), payload);
+            var result = await subject.BeforeNext(environment, payload);
 
             Assert.True(result);
-            mockLeftPipeline.Verify(x => x.Process(payload), Times.Once);
-            mockRightPipeline.Verify(x => x.Process(It.IsAny<object>()), Times.Never());
+            mockLeftPipeline.Verify(x => x.Process(environment, payload), Times.Once);
+            mockRightPipeline.Verify(x => x.Process(It.IsAny<IDictionary<string, object>>(), It.IsAny<object>()), Times.Never());
         }
 
         [Fact]
         public async Task Process__Given_LeftAndRightPipeline__When_ChooseRight__Then_ProcessRightAndReturnResult()
         {
+            var environment = new Dictionary<string, object>();
             var payload = "RIGHT";
 
-            var mockLeftPipeline = new Mock<IPipeline<object>>();
+            var mockLeftPipeline = new Mock<IForkedPipeline>();
 
-            var mockRightPipeline = new Mock<IPipeline<object>>();
+            var mockRightPipeline = new Mock<IForkedPipeline>();
             mockRightPipeline
-                .Setup(x => x.Process(payload))
-                .Returns(Task.FromResult(false));
+                .Setup(x => x.Process(environment, payload))
+                .ReturnsAsync(true);
 
-            var subject = new TestableForkedMiddleware(Tuple.Create(mockLeftPipeline.Object, mockRightPipeline.Object));
+            var subject = new TestableForkedMiddleware(Tuple.Create<IPipeline<object>, IPipeline<object>>(mockLeftPipeline.Object, mockRightPipeline.Object));
 
-            var result = await subject.BeforeNext(new Dictionary<string, object>(), payload);
+            var result = await subject.BeforeNext(environment, payload);
 
-            Assert.False(result);
-            mockLeftPipeline.Verify(x => x.Process(It.IsAny<object>()), Times.Never);
-            mockRightPipeline.Verify(x => x.Process(payload), Times.Once);
+            Assert.True(result);
+            mockLeftPipeline.Verify(x => x.Process(It.IsAny<IDictionary<string, object>>(), It.IsAny<object>()), Times.Never);
+            mockRightPipeline.Verify(x => x.Process(environment, payload), Times.Once);
         }
         
         [Fact]
