@@ -39,7 +39,7 @@ protected override void Load(ContainerBuilder builder)
     builder.Register(SuperCoolPipeline);
 }
 
-private object SuperCoolPipeline(IComponentContext context)
+private IPipeline<ICommand> SuperCoolPipeline(IComponentContext context)
 {
     var factory = new AutofacMiddlewareFactoryResolver(context);
     IPipeline<ICommand> pipeline = new PipelineBuilder(factory)
@@ -62,7 +62,7 @@ We can now depend on our pipeline and use it to process ICommands.  Here is an o
 ### Fork It
 You may add forks into the pipeline.  A ```ForkedMiddleware``` is a special middlware that makes a decision to continue down one of two possible execution paths.
 ```csharp
-private object EvenCoolerPipeline(IComponentContext context)
+private IPipeline<ICommand> EvenCoolerPipeline(IComponentContext context)
 {
     var factory = new AutofacMiddlewareFactoryResolver(context);
     return new PipelineBuilder(factory)
@@ -72,7 +72,7 @@ private object EvenCoolerPipeline(IComponentContext context)
                 .Use<LogErrorMiddleware>()
                 .Use<SendEmailAlertMiddleware>(),
             validPipeline => validPipeline
-                .Use<ExecuteComandMiddleware>())
+                .Use<ExecuteCommandMiddleware>())
         .Build<ICommand>();
 }
 ```
