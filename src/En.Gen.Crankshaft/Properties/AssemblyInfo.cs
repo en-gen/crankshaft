@@ -31,3 +31,4 @@ using System.Runtime.CompilerServices;
 
 // For mocking internal interfaces in tests
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+[assembly: InternalsVisibleTo("Crankshaft.Tests")]

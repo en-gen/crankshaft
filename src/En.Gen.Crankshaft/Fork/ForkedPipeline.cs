@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-[assembly: InternalsVisibleTo("En.Gen.Crankshaft.Tests")]
-
 namespace En.Gen.Crankshaft.Fork
 {
     internal class ForkedPipeline : Pipeline<object>, IForkedPipeline
