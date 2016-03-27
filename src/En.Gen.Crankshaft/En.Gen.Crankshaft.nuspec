@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.github.com/en-gen/crankshaft/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/en-gen/crankshaft</projectUrl>
+    <iconUrl>https://raw.github.com/en-gen/crankshaft/development/logo/engine.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>Crankshaft Pipeline</tags>
+  </metadata>
+</package>
