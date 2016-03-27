@@ -1,11 +1,11 @@
 # crankshaft
 
-[![Slack](https://img.shields.io/badge/Slack-Channel-blue.svg)](https://en-gen.slack.com/messages/crankshaft/)
+[![Slack](https://img.shields.io/badge/Slack-Channel-blue.svg)](https://en-gen.slack.com/messages/crankshaft/) [![GitHub license](https://img.shields.io/github/license/en-gen/crankshaft.svg)](https://raw.githubusercontent.com/en-gen/crankshaft/master/LICENSE)
 
-| Branch | Build | Test Coverage | Static Analysis |
-| ------ | ----- | ------------- | --------------- |
-| master | [![Build status](https://ci.appveyor.com/api/projects/status/y7wu6ll9no2twhhp/branch/master?svg=true)](https://ci.appveyor.com/project/en-gen/crankshaft/branch/master) | [![Coverage Status](https://coveralls.io/repos/github/en-gen/crankshaft/badge.svg?branch=master)](https://coveralls.io/github/en-gen/crankshaft?branch=master) | [![Coverity](https://scan.coverity.com/projects/8159/badge.svg)](https://scan.coverity.com/projects/en-gen-crankshaft) |
-| development | [![Build status](https://ci.appveyor.com/api/projects/status/y7wu6ll9no2twhhp/branch/development?svg=true)](https://ci.appveyor.com/project/en-gen/crankshaft/branch/development) | [![Coverage Status](https://coveralls.io/repos/github/en-gen/crankshaft/badge.svg?branch=development)](https://coveralls.io/github/en-gen/crankshaft?branch=master) | [![Coverity](https://scan.coverity.com/projects/8159/badge.svg)](https://scan.coverity.com/projects/en-gen-crankshaft) |
+| Branch | Nuget | Build | Test Coverage | Static Analysis |
+| ------ | ----- | ----- | ------------- | --------------- |
+| master | | [![Build status](https://ci.appveyor.com/api/projects/status/y7wu6ll9no2twhhp/branch/master?svg=true)](https://ci.appveyor.com/project/en-gen/crankshaft/branch/master) | [![Coverage Status](https://coveralls.io/repos/github/en-gen/crankshaft/badge.svg?branch=master)](https://coveralls.io/github/en-gen/crankshaft?branch=master) | [![Coverity](https://scan.coverity.com/projects/8159/badge.svg)](https://scan.coverity.com/projects/en-gen-crankshaft) |
+| development | [![NuGet Pre Release](https://img.shields.io/nuget/vpre/Crankshaft.svg)](https://www.nuget.org/packages/Crankshaft) | [![Build status](https://ci.appveyor.com/api/projects/status/y7wu6ll9no2twhhp/branch/development?svg=true)](https://ci.appveyor.com/project/en-gen/crankshaft/branch/development) | [![Coverage Status](https://coveralls.io/repos/github/en-gen/crankshaft/badge.svg?branch=development)](https://coveralls.io/github/en-gen/crankshaft?branch=master) | [![Coverity](https://scan.coverity.com/projects/8159/badge.svg)](https://scan.coverity.com/projects/en-gen-crankshaft) |
 
 ## What is it?
 A crankshaft converts the reciprocating motion of several pistons into the driveshaft's rotational motion.  Such is the purpose of this project.  It combines the efforts of many independent and modular components of business logic or infrastructure into a single pipeline to act on a given payload.

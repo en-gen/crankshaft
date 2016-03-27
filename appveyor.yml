@@ -46,7 +46,7 @@
   branches:
     only:
       - development
-  version: 0.1.0.0-build{build}
+  version: 0.1.{build}.0-beta
   os: Visual Studio 2015
   configuration: Debug
   assembly_info:
@@ -90,7 +90,9 @@
     except:
       - master
       - development
-  version: 0.1.0.0-build{build}
+  version: 0.1.{build}.0-beta
+  pull_requests:
+    do_not_increment_build_number: true
   os: Visual Studio 2015
   configuration: Debug
   assembly_info:
