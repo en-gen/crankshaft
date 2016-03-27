@@ -1,5 +1,7 @@
 # crankshaft
 
+[![Join the chat at https://gitter.im/en-gen/crankshaft](https://badges.gitter.im/en-gen/crankshaft.svg)](https://gitter.im/en-gen/crankshaft?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Slack](https://img.shields.io/badge/Slack-Channel-blue.svg)](https://en-gen.slack.com/messages/crankshaft/) [![GitHub license](https://img.shields.io/github/license/en-gen/crankshaft.svg)](https://raw.githubusercontent.com/en-gen/crankshaft/master/LICENSE)
 
 | Branch | Nuget | Build | Test Coverage | Static Analysis |
