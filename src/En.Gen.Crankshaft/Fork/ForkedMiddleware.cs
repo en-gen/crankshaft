@@ -29,7 +29,7 @@ namespace En.Gen.Crankshaft.Fork
             {
                 return await pipeline.Process(environment, payload);
             }
-            return await Task.FromResult(true);
+            return true;
         }
 
         protected abstract IPipeline<object> ChoosePipeline(object payload);
