@@ -14,7 +14,7 @@
     assembly_informational_version: '{version}'
   environment:
     COVERALLS_REPO_TOKEN:
-      secure: pJSh3uNVX95c4AMMnIWH6fy6EX8nywcfbgi2WqbuwYaWS6JQMHy6WFX0foQM4iHl
+      secure: TdgE78Zdo7V1+EaOvSIo5jjpmvF/tVnhKoYHhFgrwoEIp+38wRbMr+mkYo0PeD1T
   before_build:
   - cmd: nuget restore src\Crankshaft.sln
   build:
@@ -57,7 +57,7 @@
     assembly_informational_version: '{version}'
   environment:
     COVERALLS_REPO_TOKEN:
-      secure: pJSh3uNVX95c4AMMnIWH6fy6EX8nywcfbgi2WqbuwYaWS6JQMHy6WFX0foQM4iHl
+      secure: TdgE78Zdo7V1+EaOvSIo5jjpmvF/tVnhKoYHhFgrwoEIp+38wRbMr+mkYo0PeD1T
   before_build:
   - cmd: nuget restore src\Crankshaft.sln
   build:
@@ -103,7 +103,7 @@
     assembly_informational_version: '{version}'
   environment:
     COVERALLS_REPO_TOKEN:
-      secure: pJSh3uNVX95c4AMMnIWH6fy6EX8nywcfbgi2WqbuwYaWS6JQMHy6WFX0foQM4iHl
+      secure: TdgE78Zdo7V1+EaOvSIo5jjpmvF/tVnhKoYHhFgrwoEIp+38wRbMr+mkYo0PeD1T
   before_build:
   - cmd: nuget restore src\Crankshaft.sln
   build:
