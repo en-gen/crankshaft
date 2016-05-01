@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace En.Gen.Crankshaft
 {
-    public class Pipeline : IPipeline
+    public class Pipeline<TPayload> : IPipeline<TPayload>
     {
         protected IList<Func<IMiddleware>> Middleware { get; }
 
@@ -13,40 +13,30 @@ namespace En.Gen.Crankshaft
             Middleware = middleware;
         }
 
-        public async Task<bool> Process(object payload)
+        public async Task<bool> Process(TPayload payload)
         {
             var enumerator = Middleware.GetEnumerator();
-            return await InvokeMiddleware(enumerator, payload);
+            return await InvokeMiddleware(enumerator, new Dictionary<string, object>(), payload);
         }
 
-        private static async Task<bool> InvokeMiddleware(IEnumerator<Func<IMiddleware>> enumerator, object payload)
+        protected static async Task<bool> InvokeMiddleware(
+            IEnumerator<Func<IMiddleware>> enumerator,
+            IDictionary<string, object> environment,
+            object payload)
         {
             var success = true;
             if (enumerator.MoveNext())
             {
                 var createMiddleware = enumerator.Current;
                 var middleware = createMiddleware();
-                success = await middleware.Process(payload);
+                success = await middleware.BeforeNext(environment, payload);
                 if (success)
                 {
-                    success = await InvokeMiddleware(enumerator, payload);
-                    await middleware.PostProcess(payload);
+                    success = await InvokeMiddleware(enumerator, environment, payload);
+                    await middleware.AfterNext(environment, payload);
                 }
             }
             return success;
-        }
-    }
-
-    public class Pipeline<TPayload> : Pipeline, IPipeline<TPayload>
-    {
-        public Pipeline(IList<Func<IMiddleware>> middleware) :
-            base(middleware)
-        {
-        }
-
-        public async Task<bool> Process(TPayload payload)
-        {
-            return await base.Process(payload);
         }
     }
 }

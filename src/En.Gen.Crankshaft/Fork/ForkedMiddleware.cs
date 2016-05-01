@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace En.Gen.Crankshaft.Fork
 {
     public abstract class ForkedMiddleware : IMiddleware
     {
-        protected IPipeline LeftPipeline { get; }
-        protected IPipeline RightPipeline { get; }
+        protected IPipeline<object> LeftPipeline { get; }
+        protected IPipeline<object> RightPipeline { get; }
         
-        protected ForkedMiddleware(Tuple<IPipeline, IPipeline> pipelines)
+        protected ForkedMiddleware(Tuple<IPipeline<object>, IPipeline<object>> pipelines)
         {
             if(pipelines == null)
                 throw new ArgumentNullException(nameof(pipelines));
@@ -21,18 +22,18 @@ namespace En.Gen.Crankshaft.Fork
             RightPipeline = pipelines.Item2;
         }
 
-        public virtual async Task<bool> Process(object payload)
+        public virtual async Task<bool> BeforeNext(IDictionary<string, object> environment, object payload)
         {
-            var pipeline = ChoosePipeline(payload);
+            var pipeline = ChoosePipeline(payload) as IForkedPipeline;
             if (pipeline != null)
             {
-                return await pipeline.Process(payload);
+                return await pipeline.Process(environment, payload);
             }
-            return await Task.FromResult(true);
+            return true;
         }
 
-        protected abstract IPipeline ChoosePipeline(object payload);
+        protected abstract IPipeline<object> ChoosePipeline(object payload);
 
-        public abstract Task PostProcess(object payload);
+        public abstract Task AfterNext(IDictionary<string, object> environment, object payload);
     }
 }

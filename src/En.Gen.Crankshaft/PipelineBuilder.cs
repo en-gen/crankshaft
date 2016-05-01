@@ -31,14 +31,14 @@ namespace En.Gen.Crankshaft
         public IBuildPipeline Fork<TForkedMiddleware>(Action<IBuildPipeline> buildLeft, Action<IBuildPipeline> buildRight)
             where TForkedMiddleware : ForkedMiddleware
         {
-            var leftBuilder = new PipelineBuilder(FactoryResolver);
-            var rightBuilder = new PipelineBuilder(FactoryResolver);
+            var leftBuilder = new ForkedPipelineBuilder(FactoryResolver);
+            var rightBuilder = new ForkedPipelineBuilder(FactoryResolver);
 
             buildLeft(leftBuilder);
             buildRight(rightBuilder);
 
-            var leftPipeline = leftBuilder.Build();
-            var rightPipeline = rightBuilder.Build();
+            var leftPipeline = leftBuilder.Build<object>();
+            var rightPipeline = rightBuilder.Build<object>();
 
             var createFork = FactoryResolver.ResolveForkFactory<TForkedMiddleware>();
 
@@ -46,34 +46,7 @@ namespace En.Gen.Crankshaft
             return this;
         }
 
-        public virtual IPipeline Build()
-        {
-            return new Pipeline(Middleware.ToList());
-        }
-    }
-
-    public class PipelineBuilder<TPayload> : PipelineBuilder, IBuildPipeline<TPayload>
-    {
-        public PipelineBuilder(IResolveMiddlewareFactory factoryResolver) :
-            base(factoryResolver)
-        {
-        }
-
-        public new IBuildPipeline<TPayload> Use<TMiddleware>()
-            where TMiddleware : IMiddleware
-        {
-            base.Use<TMiddleware>();
-            return this;
-        }
-
-        public new IBuildPipeline<TPayload> Fork<TForkedMiddleware>(Action<IBuildPipeline> buildLeft, Action<IBuildPipeline> buildRight)
-            where TForkedMiddleware : ForkedMiddleware
-        {
-            base.Fork<TForkedMiddleware>(buildLeft, buildRight);
-            return this;
-        }
-
-        public new IPipeline<TPayload> Build()
+        public virtual IPipeline<TPayload> Build<TPayload>()
         {
             return new Pipeline<TPayload>(Middleware.ToList());
         }
