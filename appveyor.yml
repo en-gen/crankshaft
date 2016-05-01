@@ -14,7 +14,7 @@
     assembly_informational_version: '{version}'
   environment:
     COVERALLS_REPO_TOKEN:
-      secure: pJSh3uNVX95c4AMMnIWH6fy6EX8nywcfbgi2WqbuwYaWS6JQMHy6WFX0foQM4iHl
+      secure: TdgE78Zdo7V1+EaOvSIo5jjpmvF/tVnhKoYHhFgrwoEIp+38wRbMr+mkYo0PeD1T
   before_build:
   - cmd: nuget restore src\Crankshaft.sln
   build:
@@ -31,7 +31,7 @@
   deploy:
   - provider: NuGet
     api_key:
-      secure: UDzyB4rW2T34FpiDGyfUCSlSU0OljTZuIphVPbPxvm6RIElHiyZ021zOwKBNFn33
+      secure: 89oklakFhlZoNM9xBmCYwiGbhQNKtDas4DWZxvnvbJTJpgAuMgj6FyPVw+C1z8hh
   notifications:
   - provider: Slack
     incoming_webhook: https://hooks.slack.com/services/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
@@ -57,7 +57,7 @@
     assembly_informational_version: '{version}'
   environment:
     COVERALLS_REPO_TOKEN:
-      secure: pJSh3uNVX95c4AMMnIWH6fy6EX8nywcfbgi2WqbuwYaWS6JQMHy6WFX0foQM4iHl
+      secure: TdgE78Zdo7V1+EaOvSIo5jjpmvF/tVnhKoYHhFgrwoEIp+38wRbMr+mkYo0PeD1T
   before_build:
   - cmd: nuget restore src\Crankshaft.sln
   build:
@@ -74,7 +74,7 @@
   deploy:
   - provider: NuGet
     api_key:
-      secure: UDzyB4rW2T34FpiDGyfUCSlSU0OljTZuIphVPbPxvm6RIElHiyZ021zOwKBNFn33
+      secure: 89oklakFhlZoNM9xBmCYwiGbhQNKtDas4DWZxvnvbJTJpgAuMgj6FyPVw+C1z8hh
   notifications:
   - provider: Slack
     incoming_webhook: https://hooks.slack.com/services/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
@@ -103,7 +103,7 @@
     assembly_informational_version: '{version}'
   environment:
     COVERALLS_REPO_TOKEN:
-      secure: pJSh3uNVX95c4AMMnIWH6fy6EX8nywcfbgi2WqbuwYaWS6JQMHy6WFX0foQM4iHl
+      secure: TdgE78Zdo7V1+EaOvSIo5jjpmvF/tVnhKoYHhFgrwoEIp+38wRbMr+mkYo0PeD1T
   before_build:
   - cmd: nuget restore src\Crankshaft.sln
   build:
