@@ -31,7 +31,7 @@
   deploy:
   - provider: NuGet
     api_key:
-      secure: 89oklakFhlZoNM9xBmCYwiGbhQNKtDas4DWZxvnvbJTJpgAuMgj6FyPVw+C1z8hh
+      secure: bw/1FJFN86oO0Ehz+CQRZ597QvC/2h95B5J+Ly3nqZKrn4NVIYP6diYTWRZd6EJr
   notifications:
   - provider: Slack
     incoming_webhook: https://hooks.slack.com/services/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
